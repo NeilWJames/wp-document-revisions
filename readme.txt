@@ -1238,7 +1238,7 @@ Interested in translating WP Document Revisions? You can do so [via Crowdin](htt
 
 = Permissions management =
 
-* [Members   Membership & User Role Editor Plugin](https://wordpress.org/plugins/members/)
+* [Members � Membership & User Role Editor Plugin](https://wordpress.org/plugins/members/)
 
 	(Previously called Members)
 
@@ -1257,4 +1257,3 @@ Interested in translating WP Document Revisions? You can do so [via Crowdin](htt
 
 	(Previously called PublishPress)
 * [PublishPress Statuses](https://wordpress.org/plugins/publishpress-statuses/)
-
