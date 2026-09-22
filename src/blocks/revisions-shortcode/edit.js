@@ -7,7 +7,7 @@ export default function Edit( { attributes, setAttributes } ) {
 	const blockProps = useBlockProps();
 
 	return (
-			<>
+		<>
 			<InspectorControls>
 				<PanelBody
 					title={ __( 'Selection Criteria', 'wp-document-revisions' ) }

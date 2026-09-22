@@ -58,7 +58,7 @@ export default function Edit( { attributes, setAttributes } ) {
 					block="wp-document-revisions/document-preview"
 					attributes={ attributes }
 					skipBlockSupportsAttributes
-					/>
+				/>
 			</div>
 		</>	
 	);
