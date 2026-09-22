@@ -77,7 +77,7 @@ export default function Edit( { attributes, setAttributes, className } ) {
 						checked={ attributes.show_thumb }
 						label={ __( 'Show featured image?', 'wp-document-revisions' ) }
 						help={ __(
-							'Under certain conditons WordPress can generate an image for Page 1 of PDF documents. If created this will be used as the Featured Image.',
+							'Under certain conditions WordPress can generate an image for Page 1 of PDF documents. If created this will be used as the Featured Image.',
 							'wp-document-revisions'
 						) }
 						onChange={ ( val ) => {

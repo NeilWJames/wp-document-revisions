@@ -43,6 +43,7 @@ phpcs.ruleset.xml
 phpstan.neon.dist
 phpstan-baseline.neon
 playwright.config.mjs
+renovate.json
 scoper.inc.php
 vendor-bin/
 README.md
