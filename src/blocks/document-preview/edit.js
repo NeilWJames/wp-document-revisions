@@ -1,17 +1,13 @@
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { PanelBody, RangeControl, TextControl, ToggleControl } from '@wordpress/components';
-import ServerSideRender from '@wordpress/server-side-render';
+import { ServerSideRender } from '@wordpress/server-side-render';
 import { __ } from '@wordpress/i18n';
 
 export default function Edit( { attributes, setAttributes } ) {
 	const blockProps = useBlockProps();
 
 	return (
-		<div { ...blockProps }>
-			<ServerSideRender
-				block="wp-document-revisions/document-preview"
-				attributes={ attributes }
-			/>
+		<>
 			<InspectorControls>
 				<PanelBody
 					title={ __( 'Preview Settings', 'wp-document-revisions' ) }
@@ -57,6 +53,13 @@ export default function Edit( { attributes, setAttributes } ) {
 					/>
 				</PanelBody>
 			</InspectorControls>
-		</div>
+			<div { ...blockProps }>
+				<ServerSideRender
+					block="wp-document-revisions/document-preview"
+					attributes={ attributes }
+					skipBlockSupportsAttributes
+					/>
+			</div>
+		</>	
 	);
 }

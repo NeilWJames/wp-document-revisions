@@ -810,19 +810,18 @@ class WP_Document_Revisions_Front_End {
 	 * @since 3.3.0
 	 */
 	public function wpdr_documents_shortcode_display( array $atts ): string {
-		// get instance of global class.
-		global $wpdr;
-
 		// sanity check.
 		// do not show output to users that do not have the read_documents capability and don't get it via read.
 		if ( ( ! apply_filters( 'document_read_uses_read', true ) && ! current_user_can( 'read_documents' ) ) ) {
 			return '<p>' . esc_html__( 'You are not authorized to read this data', 'wp-document-revisions' ) . '</p>';
 		}
 
+		// set the block styling.
+		$output = '<div ' . get_block_wrapper_attributes() . '>';
+
 		// if header set, then output as <h2>.
-		$output = '';
 		if ( isset( $atts['header'] ) ) {
-			$output = '<h2>' . esc_html( $atts['header'] ) . '</h2>';
+			$output .= '<h2>' . esc_html( $atts['header'] ) . '</h2>';
 		}
 
 		$atts = shortcode_atts(
@@ -941,7 +940,7 @@ class WP_Document_Revisions_Front_End {
 			$errs = '<div class="notice notice-error">' . $errs . '</div>';
 		}
 
-		$output .= $errs . $this->documents_shortcode_int( $atts );
+		$output .= $errs . $this->documents_shortcode_int( $atts ) . '</div>';
 		return $output;
 	}
 
@@ -984,8 +983,10 @@ class WP_Document_Revisions_Front_End {
 			unset( $atts['show_pdf'] );
 		}
 
-		$output  = '<h2 class="document-title document-' . esc_attr( $atts['id'] ) . '">' . get_the_title( $atts['id'] ) . '</h2>';
-		$output .= $wpdr_fe->revisions_shortcode( $atts );
+		// set the block styling.
+		$output  = '<div ' . get_block_wrapper_attributes() . '>';
+		$output .= '<h2 class="document-title document-' . esc_attr( $atts['id'] ) . '">' . get_the_title( $atts['id'] ) . '</h2>';
+		$output .= $wpdr_fe->revisions_shortcode( $atts ) . '</div>';
 		return $output;
 	}
 
@@ -1046,7 +1047,9 @@ class WP_Document_Revisions_Front_End {
 
 		$download_link = '<a href="' . esc_url( $url ) . '" class="document-download" download>' . esc_html__( 'Download document', 'wp-document-revisions' ) . '</a>';
 
-		$output = '<div class="document-preview document-' . esc_attr( (string) $id ) . '">';
+		// set the block styling.
+		$output  = '<div ' . get_block_wrapper_attributes() . '>';
+		$output .= '<div class="document-preview document-' . esc_attr( (string) $id ) . '">';
 
 		if ( $show_title ) {
 			$output .= '<h2 class="document-title">' . esc_html( get_the_title( $id ) ) . '</h2>';
@@ -1072,7 +1075,7 @@ class WP_Document_Revisions_Front_End {
 			$output .= '<p class="document-preview-download">' . $download_link . '</p>';
 		}
 
-		$output .= '</div>';
+		$output .= '</div></div>';
 
 		return $output;
 	}
