@@ -32,7 +32,6 @@ export default function Edit( { attributes, setAttributes } ) {
 						step={ 50 }
 					/>
 					<ToggleControl
-						type="boolean"
 						checked={ attributes.show_title }
 						label={ __( 'Show Document Title?', 'wp-document-revisions' ) }
 						onChange={ ( val ) => {
@@ -40,7 +39,6 @@ export default function Edit( { attributes, setAttributes } ) {
 						} }
 					/>
 					<ToggleControl
-						type="boolean"
 						checked={ attributes.show_download }
 						label={ __( 'Show Download Link?', 'wp-document-revisions' ) }
 						help={ __(
@@ -60,6 +58,6 @@ export default function Edit( { attributes, setAttributes } ) {
 					skipBlockSupportsAttributes
 				/>
 			</div>
-		</>	
+		</>
 	);
 }
