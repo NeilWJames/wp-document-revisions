@@ -42,8 +42,8 @@
     "@testing-library/react": "^16.3.2",
     "@wordpress/e2e-test-utils-playwright": "2.0.0",
     "@wordpress/env": "^11.15.0",
-    "@wordpress/scripts": "^35.0.0",
-    "jest": "^30.5.1",
+    "@wordpress/scripts": "^36.0.0",
+    "jest": "^30.5.2",
     "jest-environment-jsdom": "~29.7.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
@@ -51,7 +51,13 @@
     "typescript": "^5.9.3"
   },
   "overrides": {
-    "jest-mock": "^30"
+    "jest-mock": "^30",
+    "copy-webpack-plugin": {
+      "serialize-javascript": "^7.0.5"
+    },
+    "sockjs": {
+      "uuid": "^11.1.1"
+    }
   },
   "jest": {
     "testEnvironment": "jsdom",
