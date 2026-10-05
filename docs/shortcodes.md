@@ -16,7 +16,7 @@ In a post or page, simply type `[documents]` to display a list of documents.
 
 The shortcode accepts _most_ [Standard WP_Query parameters](https://developer.wordpress.org/reference/classes/wp_query/) which should allow you to fine tune the output. Parameters are passed in the form of, for example, `[documents numberposts="5"]`.
 
-Specifically, the shortcode accepts: `author__in`, `author__not_in`, `author_name`, `author`, `cat`, `category__and`, `category__in`, `category__not_in`, `category_name`, `date_query`, `day`, `has_password`, `hour`, `m`, `meta_compare`, `meta_key`, `meta_query`, `meta_value_num`, `meta_value`, `minute`, `monthnum`, `name`, `numberposts`, `order`, `orderby`, `p`, `page_id`, `pagename`, `post__in`, `post__not_in`, `post_name__in`, `post_parent__in`, `post_parent__not_in`, `post_parent`, `post_password`, `post_status`, `s`, `second`, `tag__and`, `tag__in`, `tag__not_in`, `tag_id`, `tag_slug__and`, `tag_slug__in`, `tag`, `tax_query`, `title`, `w` and `year`.
+Specifically, the shortcode accepts: `author__in`, `author__not_in`, `author_name`, `author`, `cat`, `category__and`, `category__in`, `category__not_in`, `category_name`, `date_query`, `day`, `has_password`, `hour`, `m`, `meta_compare`, `meta_key`, `meta_query`, `meta_value_num`, `meta_value`, `minute`, `monthnum`, `name`, `numberposts`, `order`, `orderby`, `p`, `page_id`, `pagename`, `post__in`, `post__not_in`, `post_name__in`, `post_parent__in`, `post_parent__not_in`, `post_parent`, `post_status`, `s`, `second`, `tag__and`, `tag__in`, `tag__not_in`, `tag_id`, `tag_slug__and`, `tag_slug__in`, `tag`, `tax_query`, `title`, `w` and `year`.
 
 If you're using a custom taxonomy, you can add the taxonomy name as a parameter in your shortcode. For example, if your custom taxonomy is called "document_categories", you can write insert a shortcode like this:
 
@@ -52,7 +52,7 @@ As delivered, administrators will have the show_edit implicitly active. A filter
 
 `show_descr` (with a true/false parameter) that will output the entered description if provided.
 
-All these boolean variables can be entered without a value (with default value true except for `show_thumb` whose default value is false).
+All these boolean variables can be entered without a value, which means true. A variable left out is false, except `show_edit`, which defaults to true for administrators. Note that the `Document List` block turns `show_descr` on by default.
 
 ### Block Usage
 
@@ -125,6 +125,46 @@ These boolean variables can be entered without a value (with default value true)
 ### Block Usage
 
 The block version of the shortcode is called `Document Preview`. It renders the same inline preview and can be converted to and from a shortcode block. The `id`, `height`, `show_title` and `show_download` parameters are all supported directly in the block's settings.
+
+## Document Library Shortcode
+
+In a post or page, type `[document_library]` to list documents as a list, a table or a grid of cards. You choose which details are shown for each document, including ones only WP Document Revisions knows about, such as its workflow state and number of revisions.
+
+The library shows the same documents as the `[documents]` shortcode would for the person viewing the page: visitors see published documents, and private or unpublished documents are only listed for users who can read them.
+
+### Parameters
+
+`variant` is `list` (the default), `table` or `grid`.
+
+`columns` (with a number parameter, 1 to 6) sets the number of columns in the grid layout. The default is 3.
+
+`fields` is a comma-separated list of the details to show. They are always displayed in this order:
+
+- `thumbnail`: the featured image, or the image generated from the first page of a PDF
+- `title`: the title, linked to the document
+- `description`: the start of the document's description
+- `file_type`: the file extension, e.g. PDF
+- `workflow_state`: the document's workflow state, or its post status when EditFlow or PublishPress Statuses manages document statuses
+- `author`: the document's author
+- `modified`: the date the document was last modified
+- `revisions`: the number of revisions, only shown to users who can read revisions
+- `download`: a download button, only shown when the viewer can download the file
+
+The default is `title,file_type,author,modified,download`.
+
+`orderby` is `modified` (the default), `date`, `title` or `menu_order`, and `order` is `DESC` (the default) or `ASC`.
+
+`numberposts` (with a number parameter, up to 100) is the maximum number of documents to show. The default is 10.
+
+`new_tab` (with a true/false parameter) opens documents in a new browser tab.
+
+To filter by a taxonomy, use the taxonomy's name as the parameter, with a comma-separated list of term IDs or slugs. For example, `[document_library variant="table" workflow_state="final"]` lists only final documents.
+
+### Block Usage
+
+The block version of the shortcode is called `Document Library`, and the inserter offers it as `Document List`, `Document Table` and `Document Grid`. Its settings cover all the parameters above, with no limit on how many taxonomies you can filter by. It can be converted to and from a shortcode block.
+
+The Document Library is new. If you use it, please tell us what works and what's missing, such as pagination, search or sortable columns, in the [Document Library discussion](https://github.com/wp-document-revisions/wp-document-revisions/discussions/796).
 
 ## Latest Documents Widget
 

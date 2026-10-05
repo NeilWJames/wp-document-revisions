@@ -209,9 +209,12 @@ class WP_Document_Revisions_Recently_Revised_Widget extends WP_Widget {
 		</p>
 		<p>
 			<?php esc_html_e( 'Posts to Show:', 'wp-document-revisions' ); ?><br />
-			<?php foreach ( $instance['post_status'] as $status => $value ) : ?>
-				<input type="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'post_status_' . $status ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'post_status_' . $status ) ); ?>" type="text" <?php checked( $value ); ?> />
-				<label for="<?php echo esc_attr( $this->get_field_name( 'post_status_' . $status ) ); ?>"><?php echo esc_html( ucwords( $status ) ); ?></label><br />
+			<?php
+			foreach ( $instance['post_status'] as $status => $value ) :
+				$status_object = get_post_status_object( $status );
+				?>
+				<input type="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'post_status_' . $status ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'post_status_' . $status ) ); ?>" <?php checked( $value ); ?> />
+				<label for="<?php echo esc_attr( $this->get_field_id( 'post_status_' . $status ) ); ?>"><?php echo esc_html( $status_object ? $status_object->label : ucwords( $status ) ); ?></label><br />
 			<?php endforeach; ?>
 		</p>
 		<p>
@@ -295,28 +298,6 @@ class WP_Document_Revisions_Recently_Revised_Widget extends WP_Widget {
 					'render_callback' => array( $this, 'wpdr_documents_widget_display' ),
 				)
 			);
-		}
-
-		// Find sizes for images for PDFs. (Logic based on /wp-admin/includes/image.php).
-		$merged_sizes = array(
-			'thumbnail',
-			'medium',
-			'large',
-		);
-
-		/**
-		 * Filters the image sizes generated for non-image mime types.
-		 *
-		 * @since 4.7.0
-		 *
-		 * @param string[] $merged_sizes An array of image size names.
-		 * @param array    $metadata     Current attachment metadata.
-		 */
-		$merged_sizes = apply_filters( 'fallback_intermediate_image_sizes', $merged_sizes, array() ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-
-		if ( function_exists( 'get_intermediate_image_sizes' ) ) {
-			$registered_sizes = get_intermediate_image_sizes();
-			$merged_sizes     = array_merge( $registered_sizes, $merged_sizes );
 		}
 	}
 

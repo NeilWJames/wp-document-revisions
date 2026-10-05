@@ -391,6 +391,36 @@ class Test_WP_Document_Revisions_Front_End extends Test_Common_WPDR {
 	}
 
 	/**
+	 * Verify the summary flag reaches the revisions shortcode and block.
+	 */
+	public function test_revisions_summary() {
+		global $current_user;
+		unset( $current_user );
+		wp_set_current_user( self::$users['editor']->ID );
+		wp_cache_flush();
+
+		global $wpdr_fe;
+		if ( ! $wpdr_fe ) {
+			$wpdr_fe = new WP_Document_Revisions_Front_End();
+		}
+
+		$id = self::$editor_public_post;
+
+		self::assertEquals( 3, substr_count( do_shortcode( '[document_revisions id="' . $id . '" summary="true"]' ), '<br/>' ), 'shortcode summary' );
+		self::assertEquals( 3, substr_count( do_shortcode( '[document_revisions id="' . $id . '" summary]' ), '<br/>' ), 'shortcode bare summary' );
+		self::assertEquals( 0, substr_count( do_shortcode( '[document_revisions id="' . $id . '" summary="false"]' ), '<br/>' ), 'shortcode no summary' );
+		self::assertEquals( 0, substr_count( do_shortcode( '[document_revisions id="' . $id . '"]' ), '<br/>' ), 'shortcode default summary' );
+
+		$block = $wpdr_fe->wpdr_revisions_shortcode_display(
+			array(
+				'id'      => $id,
+				'summary' => true,
+			)
+		);
+		self::assertEquals( 3, substr_count( $block, '<br/>' ), 'block summary' );
+	}
+
+	/**
 	 * Tests the documents shortcode.
 	 *
 	 * An unauthorised user cannot see post revisions.
@@ -527,6 +557,32 @@ class Test_WP_Document_Revisions_Front_End extends Test_Common_WPDR {
 
 		self::assertEquals( 1, substr_count( $output_1, '<li' ), 'document shortcode filter count_1' );
 		self::assertEquals( 1, substr_count( $output_1, 'Editor Public' ), 'document shortcode filter title_1' );
+	}
+
+	/**
+	 * Tests that workflow_state maps to post_status when EditFlow/PublishPress own statuses.
+	 */
+	public function test_document_shortcode_wfs_maps_to_post_status() {
+		$saved_key                               = WP_Document_Revisions::$taxonomy_key_val;
+		WP_Document_Revisions::$taxonomy_key_val = 'post_status';
+
+		$captured = null;
+		$capture  = function ( $atts ) use ( &$captured ) {
+			$captured = $atts;
+			return $atts;
+		};
+		add_filter( 'document_shortcode_atts', $capture );
+
+		try {
+			do_shortcode( '[documents workflow_state="final"]' );
+		} finally {
+			remove_filter( 'document_shortcode_atts', $capture );
+			WP_Document_Revisions::$taxonomy_key_val = $saved_key;
+		}
+
+		self::assertIsArray( $captured, 'document_shortcode_atts not applied' );
+		self::assertArrayNotHasKey( 'workflow_state', $captured, 'workflow_state not removed' );
+		self::assertSame( 'final', $captured['post_status'] ?? null, 'workflow_state not mapped to post_status' );
 	}
 
 	/**
